@@ -1,0 +1,325 @@
+/* CSS Variables for theming */
+:root {
+    --bg-gradient-start: #667eea;
+    --bg-gradient-end: #764ba2;
+    --key-bg: #ffffff;
+    --key-shadow: #b8c1ec;
+    --key-text: #2d3436;
+    --key-highlight: #fdcb6e;
+    --key-highlight-glow: #f9ca24;
+    --letter-color: #ffffff;
+    --word-color: #dfe6e9;
+    --celebration-bg: rgba(255, 255, 255, 0.95);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Fredoka', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Animated background bubbles */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
+    pointer-events: none;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 900px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 20px;
+    position: relative;
+}
+
+/* Letter Display Section */
+.letter-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.current-letter {
+    font-size: 180px;
+    font-weight: 700;
+    color: var(--letter-color);
+    text-shadow: 
+        0 4px 0 rgba(0, 0, 0, 0.1),
+        0 8px 20px rgba(0, 0, 0, 0.2);
+    line-height: 1;
+    animation: letterPulse 2s ease-in-out infinite;
+}
+
+@keyframes letterPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.letter-image {
+    font-size: 120px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.letter-word {
+    font-size: 48px;
+    font-weight: 500;
+    color: var(--word-color);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+/* Keyboard Section */
+.keyboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.keyboard-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.key {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 12px;
+    background: var(--key-bg);
+    color: var(--key-text);
+    font-family: 'Fredoka', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 
+        0 4px 0 var(--key-shadow),
+        0 6px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.1s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.key:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 0 var(--key-shadow),
+        0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.key:active {
+    transform: translateY(4px);
+    box-shadow: 
+        0 0 0 var(--key-shadow),
+        0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Highlighted key (the one to press) */
+.key.highlight {
+    background: var(--key-highlight);
+    animation: keyGlow 1s ease-in-out infinite;
+    transform: scale(1.1);
+    box-shadow: 
+        0 4px 0 #e6b800,
+        0 0 30px var(--key-highlight-glow),
+        0 0 60px rgba(253, 203, 110, 0.5);
+}
+
+@keyframes keyGlow {
+    0%, 100% {
+        box-shadow: 
+            0 4px 0 #e6b800,
+            0 0 30px var(--key-highlight-glow),
+            0 0 60px rgba(253, 203, 110, 0.5);
+    }
+    50% {
+        box-shadow: 
+            0 4px 0 #e6b800,
+            0 0 50px var(--key-highlight-glow),
+            0 0 80px rgba(253, 203, 110, 0.7);
+    }
+}
+
+/* Key press animation */
+.key.pressed {
+    animation: keyPress 0.15s ease;
+}
+
+@keyframes keyPress {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Celebration Overlay */
+.celebration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+}
+
+.celebration.active {
+    opacity: 1;
+}
+
+.celebration-emoji {
+    font-size: 200px;
+    animation: celebrationPop 0.6s ease-out;
+}
+
+@keyframes celebrationPop {
+    0% {
+        transform: scale(0) rotate(-20deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(10deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Confetti particles */
+.confetti {
+    position: fixed;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    animation: confettiFall 1.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 99;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .current-letter {
+        font-size: 120px;
+    }
+    
+    .letter-image {
+        font-size: 80px;
+    }
+    
+    .letter-word {
+        font-size: 32px;
+    }
+    
+    .key {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        border-radius: 8px;
+    }
+    
+    .keyboard-row {
+        gap: 5px;
+    }
+    
+    .keyboard-container {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .current-letter {
+        font-size: 100px;
+    }
+    
+    .letter-image {
+        font-size: 60px;
+    }
+    
+    .letter-word {
+        font-size: 24px;
+    }
+    
+    .key {
+        width: 32px;
+        height: 45px;
+        font-size: 16px;
+        border-radius: 6px;
+    }
+    
+    .game-container {
+        padding: 20px 10px;
+    }
+}
